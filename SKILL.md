@@ -273,8 +273,9 @@ flowchart TD
   3. 放入替身 activation.jsc 和改过 setPath 的入口 index.js。
   4. 删掉 `app-update.yml`（自动更新是"回马枪"：官方一发更新就覆盖改造；更新器找文件失败一次后放弃，启动不受影响）。
   5. 部署基座必须与编译时**完全同款**的运行时（版本错一位都会拒收字节码）。案例实测教训：曾从主程序字符串想当然找基座，找到的是用户数据目录（缓存/试用记录），真正程序树在开发目录的 release 产物里，版本错位导致孤主进程挂死——**基座必须与编译时完全同款**（以实战教程为准）。
+  6. **连同 ui-patch 部署附件一起放入 `resources\app\`**，并在渲染入口 HTML 加引用（模板见 [references/ui-patch.js](references/ui-patch.js) / [references/ui-patch.css](references/ui-patch.css)；部署指令见 prompts.md **15.7**）。
 - **代价**：目录形态文件多（6 千+个）、无整体哈希保护（自用版无所谓）。
-- **提示词**：`references/prompts.md` 的 **15.6 部署验证提示词**。
+- **提示词**：`references/prompts.md` 的 **15.6 部署验证提示词** + **15.7 部署附件提示词**。
 
 ### 第 8 步：跑验证矩阵
 
@@ -376,10 +377,14 @@ flowchart TD
 software-decard/
 ├── SKILL.md                 # 本文件：主流程 + 红线 + 验证矩阵 + Top10 坑
 ├── README.md                # 项目说明与署名
+├── assets/                  # 部署附件素材（图片及 base64 文本）
 └── references/
-    ├── prompts.md           # 7 段分步 Agent 提示词（15.0–15.6）+ 全套代码模板附录
-    ├── pitfalls.md          # 30+ 条踩坑全表（六大主题分组）
-    └── remote-ops.md        # 远程操作手册（UU远程端口映射 + SSH + EncodedCommand）
+    ├── prompts.md           # 9 段分步 Agent 提示词（15.0–15.8）+ 全套代码模板附录
+    ├── pitfalls.md          # 30+ 条踩坑全表（六大主题分组）+ 界面注入专项
+    ├── remote-ops.md        # 远程操作手册（UU远程端口映射 + SSH + EncodedCommand）
+    ├── ui-patch.js          # ui-patch 部署附件模板（JS，顶部常量区已参数化）
+    ├── ui-patch.css         # ui-patch 部署附件模板（CSS）
+    └── ui-signature.user.js # 网页版油猴脚本模板
 ```
 
 ---

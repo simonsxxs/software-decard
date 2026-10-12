@@ -218,3 +218,19 @@ app-update.yml  → False（更新渠道已断）
 - **D6**（工作目录前提不明）→ SKILL.md §4 第 1 步「关键命令」开头写明"在 Mac 侧工程目录执行，先 cd 进工程目录"，并在命令行内标注 cd 时机（strings 前 `cd out-dir`、find 前 `cd ..`），同时说明与 remote-ops.md「文件位置约定（D:\下载）」的分工；references/remote-ops.md §2 开头补"本节在 Windows 管理员 PowerShell 执行、全绝对路径、与工作目录无关"。
 
 自检：本报告发布版已对目标软件标识与测试主机名做机械脱敏，其余为测试员原文照抄。
+
+---
+
+## 界面注入层验证（2026-10-12 追加）
+
+- **方案**：v2 方案二——顶栏「加入社区」胶囊（克隆复用原厂 #btn-buy，视觉与原厂一致）+ 名片弹层 + 底部署名兜底；注入走外链 ui-patch-v2.js/css（CSP 'self' 合规，禁内联），主窗口与人才库窗口两个渲染入口同步部署。
+- **机器检查全过**（harness 页内检查 + 截图 ndjson，证据 /tmp/ui-lab-v2/）：
+  - 主窗口 v2-normal：「加入社区」按钮存在且文案恒等（communityBtnOk=true）、#btn-buy 克隆后 ID 保留且可见、底部署名文本恒等（footerOk=true）、名片弹层节点齐（cardLineCount=4）、隐藏面可见计数 0（#license-info / #activation-modal 均 display:none）、hookOk=true；v2-popover 悬停模式 cardShown=true、qrOk=true（素材 data URI 加载成功）。
+  - 人才库窗口 v2-talent：底部署名 + 弹层节点齐、隐藏面可见计数 0；该窗口无 #btn-buy，与侦察结论一致。
+- **真机启动诊断链**（坑与解法已固化进 pitfalls.md「界面注入专项」）：
+  - psexec -i 1 跨会话拉起 → 秒退，退出码 -2147483645（0x80000003 STATUS_BREAKPOINT，PSEXESVC 代建进程触发 Chromium 致命检查）；
+  - 单实例锁排查：隔离 userData 目录 LOCKFILE=False，排除锁残留；
+  - 正法：schtasks /sc onlogon /it 建交互计划任务 + /run 启动——任务 Status=Running（Last Result 267009），4 进程存活；
+  - 当日 UU远程端口映射两次静默掉线，UU 界面重连 + 映射开关重拨恢复。
+- **存活证据**：launch-v6-verify——4 个目标软件进程全部 SessionId=1（console 交互会话），CPU 时间正常增长；主日志仅"Checking for update + 找不到 app-update.yml 已放弃"两行，无异常栈。
+- **合规**：正式部署目录全程只读，全部操作在副本进行；正式目录关键文件修改时间戳无变化。

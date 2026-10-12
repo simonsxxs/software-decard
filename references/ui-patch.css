@@ -1,0 +1,102 @@
+/* ui-patch-v2.css · v2 注入：加入社区胶囊（复用 #btn-buy 样式）+ 名片弹层 + 底部署名兜底
+   隐藏面（v2 收窄）：#license-info / #activation-modal；#btn-buy 不再隐藏，被克隆改造复用 */
+
+#license-info,
+#activation-modal {
+  display: none !important;
+}
+
+/* ---------- 顶栏「加入社区」胶囊：继承原厂 .btn/.btn-sm 外观，仅微调 ---------- */
+.uilab-community {
+  letter-spacing: .3px;
+}
+
+/* ---------- 底部署名（兜底入口） ---------- */
+.uilab2-footer {
+  flex: 0 0 auto;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card, #ffffff);
+  border-top: 1px solid var(--hairline, #e5e3dc);
+  font-size: 12px;
+  user-select: none;
+  position: relative;
+  z-index: 50;
+}
+
+.uilab2-anchor {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  cursor: default;
+  letter-spacing: .3px;
+  color: var(--muted, #8b867a);
+  opacity: .65;
+}
+
+/* ---------- 名片弹层：白底圆角细阴影，二维码 280px ---------- */
+.uilab2-card {
+  display: none;
+  position: fixed;
+  z-index: 1200;
+  width: 312px;
+  background: #ffffff;
+  border: 1px solid var(--hairline, #e5e3dc);
+  border-radius: 12px;
+  box-shadow: 0 10px 32px rgba(40, 34, 24, .18);
+  padding: 14px 16px 10px;
+  text-align: center;
+}
+
+.uilab2-card.uilab2-show {
+  display: block;
+}
+
+.uilab2-qr {
+  width: 280px;
+  height: 280px;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.uilab2-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-2, #48443c);
+  margin: 4px 0 6px;
+}
+
+.uilab2-copy {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--hairline-strong, #d6d3c8);
+  background: #fff;
+  color: var(--link, #3f5a80);
+  cursor: pointer;
+  line-height: 1.6;
+}
+
+.uilab2-copy:hover {
+  border-color: var(--link, #3f5a80);
+}
+
+.uilab2-line {
+  font-size: 11px;
+  color: #66625a;
+  line-height: 1.7;
+  margin: 2px 0;
+}
+
+.uilab2-note {
+  font-size: 10.5px;
+  color: var(--muted, #8b867a);
+  margin-top: 6px;
+  border-top: 1px solid var(--hairline, #e5e3dc);
+  padding-top: 6px;
+}

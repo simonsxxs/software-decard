@@ -1,7 +1,7 @@
-# 分步 Agent 提示词全套（15.0–15.6）+ 代码模板附录
+# 分步 Agent 提示词全套（15.0–15.8）+ 代码模板附录
 
 > 用法：改造目标软件时，把【软件名】【模块名】【通道名】替换成实际值，整段粘贴给任何 AI 编程助手即可。
-> 15.0 是项目开场总控；15.1–15.6 依次对应探针 → 挂钩 → 对账 → 写替身 → 编译回环 → 部署验证六步。
+> 15.0 是项目开场总控；15.1–15.7 依次对应探针 → 挂钩 → 对账 → 写替身 → 编译回环 → 部署验证 → 部署附件七步；15.8 是跨系统作战时的通道搭建提示词。
 > 本文末附录是每段提示词配套的完整代码模板（替换契约值与路径即用）。
 
 ---
@@ -140,7 +140,28 @@ JS 中调用授权相关 IPC 通道的代码，输出一张"消费契约表"：�
 
 ---
 
-## 15.7 远程通道搭建提示词（跨系统作战时用）
+## 15.7 部署附件 ui-patch 提示词（第 7 步·随 app 目录一起部署用）
+
+- **用途**：把 ui-patch 部署附件随 app 目录模式一起部署进目标软件，并在渲染入口 HTML 加引用。
+- **使用时机**：第 7 步部署，与替身模块、改过 setPath 的入口 index.js 一并放入 `resources\app\`。
+
+```text
+随 app 目录部署 ui-patch 附件（模板：references/ui-patch.js + references/ui-patch.css）：
+1. 复制 ui-patch.js / ui-patch.css 到渲染目录（如 resources\app\renderer\，与渲染入口 HTML 同目录，
+   具体路径按模板常量区调整）；
+2. 在每个渲染入口 HTML（例：renderer\index.html、renderer-talent\index.html）的样式链接后加
+   <link rel="stylesheet" href="ui-patch.css" />、脚本后加 <script src="ui-patch.js"></script>——
+   CSP script-src 'self' 下外部同目录文件合规，禁止内联脚本；
+3. 若渲染 HTML 的 CSP meta 是 default-src 'self'，补 img-src 'self' data:（否则 data: 图片被拦截）；
+4. 打开 ui-patch.js 顶部常量区，按目标软件实际值替换：隐藏面选择器、复用按钮 ID、各文案常量、
+   素材 data URI、样式类名前缀；保持"任何错误不得影响软件启动"的全链路静默兜底铁律；
+5. 改动前对每个渲染 HTML 留 .bak 备份；验证：启动后注入元素存在、隐藏面可见计数为 0、
+   控制台无 CSP 拦截报错。
+```
+
+---
+
+## 15.8 远程通道搭建提示词（跨系统作战时用）
 
 - **用途**：AI 在 Mac 上，目标软件在 Windows 实体机上——先打通"端口映射 + OpenSSH"自动化通道。
 - **使用时机**：需要远程操控 Windows 执行编译/部署/验证，且 Windows 的 sshd 未就绪或损坏。

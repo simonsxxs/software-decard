@@ -256,3 +256,47 @@ New-NetFirewallRule -DisplayName 'OpenSSH...'   # 放行 22 端口
 | 用户给错选项编号 | 用户回了不存在的选项时先澄清再执行。给选项编号醒目、一次不超过 3 个、给推荐 |
 | 后台看守任务通知打断当前回合 | 区分"旧看守的超时通知"和"新事件" |
 | fork 型子智能体 ≠ 并行劳动力 | 要并行就派明确分工的独立任务；同一条流水线用 resume 续派同一 agent |
+
+---
+
+## 七、界面注入专项（2026-10-12）
+
+### 坑 U1：UU远程端口映射静默丢失
+- **现象**：UU远程界面显示映射"已连接/成功"，但 Mac 侧 `nc -z 127.0.0.1 10022` 不通、ssh 会话断死；当日实测掉线两次。
+- **根因**：远控软件的端口映射 UI 状态与本地实际监听脱节——界面绿灯不等于端口在听。
+- **解法**：恢复动作固定两步：UU 界面先「重新连接」，再把映射开关关掉重拨；恢复后立刻跑验证三连（nc → SSH 横幅 → 登录实测）确认，别只看界面状态。
+
+### 坑 U2：psexec -i 跨会话拉起 Electron 秒退（0x80000003）
+- **现象**：SYSTEM 会话执行 `psexec -i 1 <exe>` 拉起目标软件，客户端 20 秒内退出，错误码 -2147483645。
+- **根因**：0x80000003 = STATUS_BREAKPOINT——PSEXESVC 服务代建的进程环境触发 Chromium 致命检查，Electron 起不来。
+- **解法**：跨会话启动 GUI 的正法是计划任务交互模式：`schtasks /create /tn <名> /tr <exe> /sc onlogon /it`（Logon Mode = Interactive only）+ `schtasks /run`；旧任务先 `/delete /f` 再建，跑完 `schtasks /query /tn <名>` 看 Last Result（267009 = 运行中）。
+
+### 坑 U3：psexec 把中文路径 ANSI 化成 ????
+- **现象**：命令行里的 `D:\软件\...` 经 psexec 传输后变成 `D:\????\...`，进程起不来或找不到文件。
+- **根因**：psexec 传输通道非 Unicode，中文按系统 ANSI 码页损坏。
+- **解法**：交接点全部 ASCII 化——建 ASCII 目录 junction（`cmd /c mklink /j D:\lab-link "D:\中文目录"`），或直接把产物放 `D:\lab-root` 式纯 ASCII 目录；exe 可用硬链接（`mklink /h`）挂进 ASCII 路径。
+
+### 坑 U4：单实例锁排查顺序
+- **现象**：远程拉起软件"毫无反应"，怀疑被单实例锁挡住。
+- **根因**：上次强杀可能留下 userData 下的锁文件，但"没反应"的原因很多（通道、权限、路径损坏都可能）。
+- **解法**：排查讲顺序——先看隔离 userData 目录的 SingletonLock/lockfile 残留（有则删锁重试），锁排除后再查端口、权限、通道；别一上来就怀疑大部件。
+
+### 坑 U5：macOS 没有 GNU timeout
+- **现象**：照抄远程手册验证三连第②步 `timeout 5 bash -c '...'` 在 macOS 上报 command not found。
+- **根因**：macOS 自带 BSD 工具链，没有 GNU coreutils 的 timeout。
+- **解法**：用 python socket 等价实现读 SSH 横幅（几秒内打印 `SSH-2.0-` = 真 SSH；超时无输出 = 回去修 sshd），或 `brew install coreutils` 后改用 `gtimeout`。
+
+### 坑 U6：CSP default-src 'self' 拦截 data: 图片
+- **现象**：注入的 data URI 图片不显示，harness 控制台抓到 `Refused to load the image data:image/png;base64,...`。
+- **根因**：渲染 HTML 的 CSP meta `default-src 'self'` 不放行 `data:` 图片源。
+- **解法**：在每个渲染入口 HTML 的 CSP meta 追加 `img-src 'self' data:;`（其余指令不动）；同时记住外部同目录 script/link 本就 'self' 合规，但**内联脚本被禁**——注入必须走独立文件。
+
+### 坑 U7：base64 素材尾部换行炸 JS 字符串拼接
+- **现象**：把 .b64 文件内容拼进 JS 常量后，语法报错或运行行为异常。
+- **根因**：.b64 文件末尾自带换行，直接拼进引号字符串会把下一行代码吞进字符串。
+- **解法**：拼接前剥尾换行（shell 侧 `tr -d '\n'`，代码侧 `.trim()`），拼完对产物跑 `node --check` 语法校验再交付。
+
+### 坑 U8：打包 exe 不吃目录参数
+- **现象**：想让 harness 用 `exe <目录>` 方式加载另一个 app 目录——渲染进程 cmdline 实测 `--app-path` 永远指向 exe 自身旁侧的 `resources\app`。
+- **根因**：打包后的 Electron exe 只加载固定物理布局（自身旁侧 resources\app），不接受目录参数；"app 目录模式"是物理布局概念，不是运行时开关。
+- **解法**：harness 用程序树副本（exe+dlls+locales 整树 robocopy），把副本里的 `resources\app` 整体替换为 harness 三件套再跑。
