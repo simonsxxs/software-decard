@@ -22,6 +22,8 @@
 | `assets/` | 部署附件素材（图片及 base64 文本） |
 | `VERIFY-REPORT.md` | 白纸实测报告：独立智能体仅凭本 Skill 在真实 Windows 环境完成侦察与验证的执行记录，含 6 条文档缺陷的修复留痕与界面注入层验证追加 |
 
+> **从技能市场下载的压缩包若只含 .md 文档**（部分平台限制文件类型）：ui-patch 部署附件（JS/CSS）、油猴模板、二维码素材等二进制文件的完整版，请从 [GitHub 仓库](https://github.com/simonsxxs/software-decard) 或 [Gitee 镜像](https://gitee.com/simonsxx/software-decard) 获取。
+
 ## 边界（务必阅读）
 
 - **仅限自购软件自用**：前提是你已购买该软件的授权。
