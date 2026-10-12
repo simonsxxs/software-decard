@@ -67,8 +67,8 @@
     img.className = 'uilab2-qr';
     img.src = QR_DATA_URI;
     img.alt = '微信二维码';
-    img.width = 280;
-    img.height = 280;
+    img.width = 152;
+    img.height = 152;
     card.appendChild(img);
 
     var row = el('div', 'uilab2-row');

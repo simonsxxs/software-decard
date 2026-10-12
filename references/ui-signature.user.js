@@ -49,16 +49,16 @@
       #ui-signature-pill .dot{width:7px;height:7px;border-radius:50%;background:#07c160}
       #ui-signature-pill:hover{border-color:rgba(0,0,0,.16)}
       #ui-signature-card{position:fixed;right:16px;bottom:56px;z-index:2147483001;
-        width:280px;padding:16px 16px 12px;border-radius:12px;background:#ffffff;
-        border:1px solid rgba(0,0,0,.06);box-shadow:0 8px 30px rgba(0,0,0,.16);
-        font:12px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+        width:212px;padding:10px 12px 8px;border-radius:10px;background:#ffffff;
+        border:1px solid rgba(0,0,0,.06);box-shadow:0 6px 22px rgba(0,0,0,.14);
+        font:11px/1.6 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
         color:rgba(0,0,0,.75);text-align:center;display:none}
       #ui-signature-card.open{display:block}
-      #ui-signature-card img{width:200px;height:200px;display:block;margin:0 auto 8px}
-      #ui-signature-card .wx{font-size:13px;font-weight:600;color:rgba(0,0,0,.85)}
-      #ui-signature-card .copy{margin-left:6px;padding:1px 8px;border-radius:6px;
-        border:1px solid rgba(0,0,0,.12);background:#f7f7f7;cursor:pointer;font-size:11px}
-      #ui-signature-card .meta{margin-top:6px;font-size:11px;color:rgba(0,0,0,.55)}
+      #ui-signature-card img{width:140px;height:140px;display:block;margin:0 auto 6px}
+      #ui-signature-card .wx{font-size:12px;font-weight:600;color:rgba(0,0,0,.85)}
+      #ui-signature-card .copy{margin-left:6px;padding:1px 7px;border-radius:6px;
+        border:1px solid rgba(0,0,0,.12);background:#f7f7f7;cursor:pointer;font-size:10px}
+      #ui-signature-card .meta{margin-top:4px;font-size:10px;color:rgba(0,0,0,.55)}
     `;
     const style = document.createElement('style');
     style.textContent = css;

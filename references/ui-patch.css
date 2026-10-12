@@ -36,17 +36,17 @@
   opacity: .65;
 }
 
-/* ---------- 名片弹层：白底圆角细阴影，二维码 280px ---------- */
+/* ---------- 名片弹层：白底圆角细阴影，紧凑版（v3）：卡 224px / 二维码 152px ---------- */
 .uilab2-card {
   display: none;
   position: fixed;
   z-index: 1200;
-  width: 312px;
+  width: 224px;
   background: #ffffff;
   border: 1px solid var(--hairline, #e5e3dc);
-  border-radius: 12px;
-  box-shadow: 0 10px 32px rgba(40, 34, 24, .18);
-  padding: 14px 16px 10px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(40, 34, 24, .16);
+  padding: 10px 12px 8px;
   text-align: center;
 }
 
@@ -55,25 +55,25 @@
 }
 
 .uilab2-qr {
-  width: 280px;
-  height: 280px;
+  width: 152px;
+  height: 152px;
   display: block;
-  margin: 0 auto 10px;
+  margin: 0 auto 6px;
 }
 
 .uilab2-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-size: 12px;
+  gap: 6px;
+  font-size: 11px;
   color: var(--ink-2, #48443c);
-  margin: 4px 0 6px;
+  margin: 2px 0 4px;
 }
 
 .uilab2-copy {
-  font-size: 11px;
-  padding: 2px 10px;
+  font-size: 10px;
+  padding: 1px 8px;
   border-radius: 999px;
   border: 1px solid var(--hairline-strong, #d6d3c8);
   background: #fff;
@@ -87,16 +87,16 @@
 }
 
 .uilab2-line {
-  font-size: 11px;
+  font-size: 10px;
   color: #66625a;
-  line-height: 1.7;
-  margin: 2px 0;
+  line-height: 1.6;
+  margin: 1px 0;
 }
 
 .uilab2-note {
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--muted, #8b867a);
-  margin-top: 6px;
+  margin-top: 4px;
   border-top: 1px solid var(--hairline, #e5e3dc);
-  padding-top: 6px;
+  padding-top: 4px;
 }
