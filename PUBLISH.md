@@ -7,7 +7,7 @@
 | ima 技能广场 | ➖ 不适用 | | | 用户决定不上传 |
 | GitHub | ✅ 已上架 | https://github.com/simonsxxs/software-decard | 2026-10-12 | 专属仓，主开发副本 |
 | Gitee | ✅ 已上架 | https://gitee.com/simonsxx/software-decard | 2026-10-12 | GitHub 同步镜像 |
-| SkillHub | ⏳ 审核中 | https://skillhub.cn/skill/software-decard | 2026-10-12 | GitHub 导入发布（第二次：自定义图标 + 带署名描述），API 201；安全审核中，通过后公开页生效 |
+| SkillHub | ❌ 失败 | https://skillhub.cn/skill/software-decard | 2026-10-12 | 安全审核不通过（2026-10-12 14:32，科恩+云鼎双实验室判「可疑」）：内容扫描命中 19 类风险项（改文件/枚举进程/HTTP/提示词广告推广等），属内容性质问题非技术故障，申诉通过概率极低，不再上架 |
 | aiSkill.market | | | | |
 | ClawHub | | | | |
 | 扣子（豆包） | | | | |
@@ -39,3 +39,12 @@
 - 描述字段标了必填（红框），尽管 placeholder 说留空自动用 SKILL.md frontmatter——**一定要手动填**，并带上署名
 - 文件注入替代方案（扩展没开文件访问权限时）：把文件 push 到 GitHub 仓库 → 页面里 `fetch('https://raw.githubusercontent.com/<owner>/<repo>/main/<path>')`（CORS 放行）→ 构造 File → DataTransfer 赋给 `input.files` → dispatch change。图标上传走「自定义」tab → 点击上传图片（弹出裁剪对话框）→ 点「上传」确认
 - 发布后内容以 GitHub 仓库当前状态为准；后续更新 Skill 走"更新"重新触发审核
+
+## SkillHub 审核结果（2026-10-12 14:32）
+
+- 结论：**安全审核不通过**，「我的 Skills」里该条目状态为「安全审核不通过」，操作仅余 查看原因/重新发布/取消发布
+- 审核方：科恩实验室、云鼎实验室两家静态扫描均判「可疑，存在潜在风险」
+- 命中清单（19 项）：安装依赖包 / 修改权限 / 读取文件 / 写入文件 / 修改系统文件 / 收集网络配置信息 / 枚举进程列表 / 收集系统信息 / 收集用户信息 / 使用加密 / 访问日志 / 下载二进制文件 / 访问剪贴板 / 编译构建 / HTTP 请求 / 进程创建 / 提示词广告推广 / 读取环境变量 / 创建定时任务
+- 定性：扫描命中全部为**真实能力描述**（本 Skill 的操作手册/分步提示词确实会指挥 Agent 做这些事），不是误报；其中「提示词广告推广」对应界面署名层的引流设计
+- 处置判断：腾讯系安全实验室对「修改他人软件 + 隐藏署名引流」类内容不会放行，**申诉（对话框内有申诉按钮）通过概率极低，不建议投入**；本 Skill 的公开渠道维持 GitHub/Gitee 专属仓
+- 平台差异结论：GitHub/Gitee 对仓库内容不做此类安全审核；SkillHub 类「Skill 应用市场」有内容安全审核，逆向/改软/引流类 Skill 基本无法过审——以后同类内容直接跳过 Skill 市场，首发 GitHub/Gitee
