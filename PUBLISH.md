@@ -7,7 +7,7 @@
 | ima 技能广场 | ➖ 不适用 | | | 用户决定不上传 |
 | GitHub | ✅ 已上架 | https://github.com/simonsxxs/software-decard | 2026-10-12 | 专属仓，主开发副本 |
 | Gitee | ✅ 已上架 | https://gitee.com/simonsxx/software-decard | 2026-10-12 | GitHub 同步镜像 |
-| SkillHub | ⏳ 审核中 | https://skillhub.cn/skill/software-decard | 2026-10-12 | GitHub 导入发布，API 201；安全审核中，通过后公开页生效 |
+| SkillHub | ⏳ 审核中 | https://skillhub.cn/skill/software-decard | 2026-10-12 | GitHub 导入发布（第二次：自定义图标 + 带署名描述），API 201；安全审核中，通过后公开页生效 |
 | aiSkill.market | | | | |
 | ClawHub | | | | |
 | 扣子（豆包） | | | | |
@@ -25,7 +25,7 @@
   1. 帮我把这个自购软件去掉卡密，改成自用版
   2. 侦察一下这个 Electron 软件的授权校验链路
   3. 按 SKILL.md 第 7 步部署 ui-patch 界面署名层
-- 头像/封面：SkillHub 预设图标
+- 头像/封面：自定义图标 assets/skillhub-icon.png（锁形图标，已上传，合规审核后公开展示）
 
 ## SkillHub 发布备注（本次实战沉淀）
 
@@ -35,4 +35,7 @@
 - 提交是否成功看 `api.skillhub.cn/api/v1/community/skills/publish` 响应：**201 = 成功**，400 看响应体
 - 导入流程的表单**没有分类必选**（与手动上传不同），发布后在"我的 Skills"显示"安全审核中"
 - 坑：发布成功后页面跳转 dashboard，若此时复用旧 ref 点击，可能误触列表里其他 Skill 的"更新"弹窗——看到非目标 Skill 的对话框直接关闭，不要提交
+- 审核中的 Skill 没有「更新」入口（只有已发布的才有）；要改图标/描述只能取消发布重新提交
+- 描述字段标了必填（红框），尽管 placeholder 说留空自动用 SKILL.md frontmatter——**一定要手动填**，并带上署名
+- 文件注入替代方案（扩展没开文件访问权限时）：把文件 push 到 GitHub 仓库 → 页面里 `fetch('https://raw.githubusercontent.com/<owner>/<repo>/main/<path>')`（CORS 放行）→ 构造 File → DataTransfer 赋给 `input.files` → dispatch change。图标上传走「自定义」tab → 点击上传图片（弹出裁剪对话框）→ 点「上传」确认
 - 发布后内容以 GitHub 仓库当前状态为准；后续更新 Skill 走"更新"重新触发审核
