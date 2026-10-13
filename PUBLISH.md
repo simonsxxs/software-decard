@@ -47,5 +47,5 @@
 - 命中清单（19 项）：安装依赖包 / 修改权限 / 读取文件 / 写入文件 / 修改系统文件 / 收集网络配置信息 / 枚举进程列表 / 收集系统信息 / 收集用户信息 / 使用加密 / 访问日志 / 下载二进制文件 / 访问剪贴板 / 编译构建 / HTTP 请求 / 进程创建 / 提示词广告推广 / 读取环境变量 / 创建定时任务
 - 定性：扫描命中全部为**真实能力描述**（本 Skill 的操作手册/分步提示词确实会指挥 Agent 做这些事），不是误报；其中「提示词广告推广」对应界面署名层的引流设计
 - 处置判断：腾讯系安全实验室对「修改他人软件 + 隐藏署名引流」类内容不会放行，**申诉（对话框内有申诉按钮）通过概率极低，不建议投入**；本 Skill 的公开渠道维持 GitHub/Gitee 专属仓
-- 后续（2026-10-12）：曝光改走纯知识科普姊妹版 [electron-licensing-insights](../../electron-licensing-insights/)（SkillHub 审核中），完整版指引双链指回本仓库——SkillHub 做入口，GitHub/Gitee 做落地
+- 后续（2026-10-13）：曝光改走纯知识科普姊妹版 [electron-licensing-insights](../../electron-licensing-insights/)（SkillHub 已上架，显示名称带「卡密」字样过审），完整版指引双链指回本仓库——SkillHub 做入口，GitHub/Gitee 做落地
 - 平台差异结论：GitHub/Gitee 对仓库内容不做此类安全审核；SkillHub 类「Skill 应用市场」有内容安全审核，逆向/改软/引流类 Skill 基本无法过审——以后同类内容直接跳过 Skill 市场，首发 GitHub/Gitee
